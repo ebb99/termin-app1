@@ -12,11 +12,14 @@ app.use(express.json());
 
 // --- Datenbank-Verbindung (PostgreSQL) ---
 const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "postgres",
-    password: "6778",
-    port: 5432
+    // Nutzt die Umgebungsvariable DATABASE_URL
+    connectionString: process.env.DATABASE_URL,
+    
+    // Wichtig für Railway (Hosting): Railway benötigt meist eine SSL-Verbindung
+    // Im Produktions-Modus (NODE_ENV=production) aktivieren wir SSL.
+    ssl: process.env.NODE_ENV === 'production' ? {
+        rejectUnauthorized: false
+    } : false
 });
 
 // Testen der Datenbankverbindung beim Start
