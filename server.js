@@ -58,6 +58,41 @@ app.post('/api/termine', async (req, res) => {
     }
 });
 
+// --- API: Alle Termine abrufen ---
+app.get('/api/termine', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM termine ORDER BY start_zeitpunkt ASC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Termine:', error);
+    res.status(500).json({ error: 'Fehler beim Abrufen der Termine' });
+  }
+});
+
+// --- API: Termin löschen ---
+app.delete('/api/termine/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query('DELETE FROM termine WHERE id = $1 RETURNING *', [id]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Termin nicht gefunden' });
+    }
+
+    res.json({ success: true, deleted: result.rows[0] });
+  } catch (error) {
+    console.error('Fehler beim Löschen des Termins:', error);
+    res.status(500).json({ error: 'Fehler beim Löschen des Termins' });
+  }
+});
+
+app.get('/termine', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'termine.html'));
+});
+
+
+
 // --- Static Files ---
 app.use(express.static(path.join(__dirname, 'public')));
 
