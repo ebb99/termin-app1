@@ -1,11 +1,14 @@
 // server.js
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const express = require('express');
 const { Pool } = require('pg');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+// NEU: Lesen Sie den Port aus der Umgebungsvariable, falls vorhanden, sonst 8080 (für lokal)
+const PORT = process.env.PORT || 8080; 
 
 // Middleware, um JSON-Daten aus dem Frontend zu verarbeiten
 app.use(express.json());
@@ -69,5 +72,5 @@ app.get('/', (req, res) => {
 // --- Server starten ---
 
 app.listen(PORT, () => {
-    console.log(`Server läuft auf http://localhost:${PORT}`);
+  console.log(`Server läuft auf Port ${PORT}`); // Passen Sie auch die Konsolenausgabe an
 });
