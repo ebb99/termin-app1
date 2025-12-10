@@ -1,3 +1,17 @@
 {
-    "sqltools.connections": []
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": false
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "Termine App1",
+            "connectString": "postgresql://postgres:BAGXLhDWhJHOdDxqqsmhBidmnXDigrnj@trolley.proxy.rlwy.net:24237/railway"
+        }
+    ]
 }
